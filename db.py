@@ -13,7 +13,7 @@ PASS = os.environ.get('DB_PASS')
 DATABASE = os.environ.get('DATABASE')
 
 Base = automap_base()
-engine = create_engine(url=os.environ.get('DATABASE_URL').format(USERNAME, PASS, HOST, PORT, DATABASE))
+engine = create_engine(url=os.environ.get('DATABASE_URL').format(USERNAME, PASS, HOST, DATABASE))
 Base.prepare(engine,reflect=True)
 session = Session(engine)
 
