@@ -344,27 +344,3 @@ class User:
         user.pop("password")
         return user
 
-
-# venue = Venues().update(2, **{'city':'new city'})
-# print(venue)
-
-# data = {'team_1':'Royal Challengers Bangalore',
-#  'team_2':'Kings XI Punjab',
-#  'match_date':'2020-04-18',
-#  'venue':'Wankhede Stadium',
-#  'toss_winner':'Royal Challengers Bangalore',
-#  'toss_decision':'field',
-#  'win_type':'runs',
-#  'win_margin':'140',
-#  'eliminator':'N',
-#  'method':'',
-#  'umpire_1':'K Hariharan',
-#  'umpire_2':'SL Shastri',
-#  'man_of_the_match':'MV Boucher',
-#  'match_winner':'Kings XI Punjab'}
-
-# match = Matches().delete(1237182)
-# print(match)
-# match = Matches().get_by_filter(**{'venue':1, 'team_1': 1, 'team_2':2})
-# print(match)
-

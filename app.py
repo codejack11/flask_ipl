@@ -205,6 +205,29 @@ def get_matches(current_user):
             "data": None
         }), 500
 
+@app.route("/api/search/match", methods=["POST"])
+@token_required
+def get_matches(current_user):
+    try:
+        search_filter = dict(request.form)
+        if not search_filter:
+            return {
+                "message": "Invalid data, you need to provide proper details",
+                "data": None,
+                "error": "Bad Request"
+            }, 400
+        matches = Matches().get_by_filter(search_filter)
+        return jsonify({
+            "message": "successfully retrieved all matches",
+            "data": matches
+        })
+    except Exception as e:
+        return jsonify({
+            "message": "failed to retrieve all matches",
+            "error": str(e),
+            "data": None
+        }), 500
+
 @app.route("/api/matches/<match_id>", methods=["GET"])
 @token_required
 def get_match(match_id):
