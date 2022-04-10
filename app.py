@@ -207,7 +207,7 @@ def get_matches(current_user):
 
 @app.route("/api/search/match", methods=["POST"])
 @token_required
-def get_matches(current_user):
+def get_matches_by_filter(current_user):
     try:
         search_filter = dict(request.form)
         if not search_filter:
