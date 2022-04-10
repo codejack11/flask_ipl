@@ -205,22 +205,23 @@ def get_matches(current_user):
             "data": None
         }), 500
 
-@app.route("/api/search/match", methods=["POST"])
+@app.route("/api/search/match/", methods=["POST"])
 @token_required
 def get_matches_by_filter(current_user):
     try:
-        search_filter = dict(request.form)
+        search_filter = request.json
         if not search_filter:
             return {
                 "message": "Invalid data, you need to provide proper details",
                 "data": None,
                 "error": "Bad Request"
             }, 400
-        matches = Matches().get_by_filter(search_filter)
+        
+        match = Matches().get_by_filter(**search_filter)
         return jsonify({
             "message": "successfully retrieved all matches",
-            "data": matches
-        })
+            "data": match
+        }), 200
     except Exception as e:
         return jsonify({
             "message": "failed to retrieve all matches",
@@ -230,7 +231,7 @@ def get_matches_by_filter(current_user):
 
 @app.route("/api/matches/<match_id>", methods=["GET"])
 @token_required
-def get_match(match_id):
+def get_match(current_user, match_id):
     try:
         match = Matches().get_by_id(match_id)
         if not match:
@@ -317,7 +318,7 @@ def get_players(current_user):
 
 @app.route("/api/players/<player_id>", methods=["GET"])
 @token_required
-def get_player(player_id):
+def get_player(current_user, player_id):
     try:
         player = Players().get_by_id(player_id)
         if not player:
@@ -355,7 +356,7 @@ def get_teams(current_user):
 
 @app.route("/api/teams/<team_id>", methods=["GET"])
 @token_required
-def get_team(team_id):
+def get_team(current_user, team_id):
     try:
         team = Teams().get_by_id(team_id)
         if not team:
@@ -393,7 +394,7 @@ def get_umpires(current_user):
 
 @app.route("/api/umpires/<umpire_id>", methods=["GET"])
 @token_required
-def get_umpire(umpire_id):
+def get_umpire(current_user, umpire_id):
     try:
         umpire = Umpires().get_by_id(umpire_id)
         if not umpire:
@@ -431,7 +432,7 @@ def get_venues(current_user):
 
 @app.route("/api/venues/<venue_id>", methods=["GET"])
 @token_required
-def get_venue(venue_id):
+def get_venue(current_user, venue_id):
     try:
         venue = Venues().get_by_id(venue_id)
         if not venue:

@@ -235,17 +235,19 @@ class Matches:
 
         matches = query.all()
         matches = [serialize_object(label) for label in matches]
-        
-        for match in matches:
+        try:
+            for match in matches:
 
-            match['team_1'] = Teams().get_by_id(match["team_1"])['name']
-            match['team_2'] = Teams().get_by_id(match["team_2"])['name']
-            match['toss_winner'] = Teams().get_by_id(match["toss_winner"])['name']
-            match['match_winner'] = Teams().get_by_id(match["match_winner"])['name']
-            match['man_of_the_match'] = Players().get_by_id(match["man_of_the_match"])['name']
-            match['umpire_1'] = Umpires().get_by_id(match["umpire_1"])['name']
-            match['umpire_2'] = Umpires().get_by_id(match["umpire_2"])['name']
-            match['venue'] = Venues().get_by_id(match["venue"])['stadium']
+                match['team_1'] = Teams().get_by_id(match["team_1"])['name']
+                match['team_2'] = Teams().get_by_id(match["team_2"])['name']
+                match['toss_winner'] = Teams().get_by_id(match["toss_winner"])['name']
+                match['match_winner'] = Teams().get_by_id(match["match_winner"])['name']
+                match['man_of_the_match'] = Players().get_by_id(match["man_of_the_match"])['name']
+                match['umpire_1'] = Umpires().get_by_id(match["umpire_1"])['name']
+                match['umpire_2'] = Umpires().get_by_id(match["umpire_2"])['name']
+                match['venue'] = Venues().get_by_id(match["venue"])['stadium']
+        except Exception as e:
+            print(e)
 
         return matches
 
