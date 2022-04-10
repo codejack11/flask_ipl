@@ -1,8 +1,8 @@
-import jwt, os
+import os
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from validate import validate_match, validate_email_and_password, validate_user
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -10,11 +10,11 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
-# print(SECRET_KEY)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 from models import Matches, Players, Teams, Umpires, User, Venues
 from auth_middleware import token_required
+from utils import generate_token
 
 @app.route("/")
 def hello():
@@ -40,6 +40,7 @@ def add_user():
                 "error": "Conflict",
                 "data": None
             }, 409
+        user['token']=generate_token(user['id'])
         return {
             "message": "Successfully created new user",
             "data": user
@@ -72,11 +73,7 @@ def login():
         if user:
             try:
                 # token should expire after 24 hrs
-                user["token"] = jwt.encode(
-                    {"user_id": user["id"]},
-                    app.config["SECRET_KEY"],
-                    algorithm="HS256"
-                )
+                user["token"] = generate_token(user["id"])
                 return {
                     "message": "Successfully fetched auth token",
                     "data": user
@@ -157,13 +154,6 @@ def add_match(current_user):
                 "data": None,
                 "error": "Bad Request"
             }, 400
-        # if not request.files["cover_image"]:
-        #     return {
-        #         "message": "cover image is required",
-        #         "data": None
-        #     }, 400
-
-        # match["image_url"] = request.host_url+"static/books/"+save_pic(request.files["cover_image"])
         is_validated = validate_match(**match)
         if is_validated is not True:
             return {

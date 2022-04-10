@@ -25,17 +25,6 @@ def validate_match(**args):
             'team_2': 'Team-2 is required',
             'match_winner': 'Match Winner is required',
         }
-    # if args.get('category') not in ['romance', 'peotry', 'politics' 'picture book', 'science', 'fantasy', 'horror', 'thriller']:
-    #     return {
-    #         'status': 'error',
-    #         'message': 'Invalid category'
-    #     }
-    # try:
-    #     ObjectId(args.get('user_id'))
-    # except:
-    #     return {
-    #         'user_id': 'User ID must be valid'
-    #     }
     if not isinstance(args.get('team_1'), str) or not isinstance(args.get('match_winner'), str) \
         or not isinstance(args.get('team_2'), str):
         return {
@@ -73,6 +62,7 @@ def validate_user(**args):
     #         'password': 'Password is invalid, Should be atleast 8 characters with upper and lower case letters, numbers and special characters'
     #     }
     if not 2 <= len(args['name'].split(' ')) <= 30:
+        print(len(args['name'].split(' ')))
         return {
             'name': 'Name must be between 2 and 30 words'
         }
