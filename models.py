@@ -213,14 +213,14 @@ class Matches:
         return [serialize_object(label) for label in matches]
 
     def create(self, **data):
-        data['team_1'] = Teams().get_by_name(data["team_1"])['id']
-        data['team_2'] = Teams().get_by_name(data["team_2"])['id']
-        data['toss_winner'] = Teams().get_by_name(data["toss_winner"])['id']
-        data['match_winner'] = Teams().get_by_name(data["match_winner"])['id']
-        data['man_of_the_match'] = Players().get_by_name(data["man_of_the_match"])['id']
-        data['umpire_1'] = Umpires().get_by_name(data["umpire_1"])['id']
-        data['umpire_2'] = Umpires().get_by_name(data["umpire_2"])['id']
-        data['venue'] = Venues().get_by_stadium(data["venue"])['id']
+        data['team_1'] = Teams().get_by_name(data["team_1"])['id'] if data['team_1'] else None
+        data['team_2'] = Teams().get_by_name(data["team_2"])['id'] if data['team_2'] else None
+        data['toss_winner'] = Teams().get_by_name(data["toss_winner"])['id'] if data['toss_winner'] else None
+        data['match_winner'] = Teams().get_by_name(data["match_winner"])['id'] if data['match_winner'] else None
+        data['man_of_the_match'] = Players().get_by_name(data["man_of_the_match"])['id'] if data['man_of_the_match'] else None
+        data['umpire_1'] = Umpires().get_by_name(data["umpire_1"])['id'] if data['umpire_1'] else None
+        data['umpire_2'] = Umpires().get_by_name(data["umpire_2"])['id'] if data['umpire_2'] else None
+        data['venue'] = Venues().get_by_stadium(data["venue"])['id'] if data['venue'] else None
 
         new_match = Match(**data)
         session.add(new_match)
@@ -235,19 +235,17 @@ class Matches:
 
         matches = query.all()
         matches = [serialize_object(label) for label in matches]
-        try:
-            for match in matches:
+        
+        for match in matches:
 
-                match['team_1'] = Teams().get_by_id(match["team_1"])['name']
-                match['team_2'] = Teams().get_by_id(match["team_2"])['name']
-                match['toss_winner'] = Teams().get_by_id(match["toss_winner"])['name']
-                match['match_winner'] = Teams().get_by_id(match["match_winner"])['name']
-                match['man_of_the_match'] = Players().get_by_id(match["man_of_the_match"])['name']
-                match['umpire_1'] = Umpires().get_by_id(match["umpire_1"])['name']
-                match['umpire_2'] = Umpires().get_by_id(match["umpire_2"])['name']
-                match['venue'] = Venues().get_by_id(match["venue"])['stadium']
-        except Exception as e:
-            print(e)
+            match['team_1'] = Teams().get_by_id(match["team_1"])['name'] if match["team_1"] else None
+            match['team_2'] = Teams().get_by_id(match["team_2"])['name'] if match["team_2"] else None
+            match['toss_winner'] = Teams().get_by_id(match["toss_winner"])['name'] if match["toss_winner"] else None
+            match['match_winner'] = Teams().get_by_id(match["match_winner"])['name'] if match["match_winner"] else None
+            match['man_of_the_match'] = Players().get_by_id(match["man_of_the_match"])['name'] if match["man_of_the_match"] else None
+            match['umpire_1'] = Umpires().get_by_id(match["umpire_1"])['name'] if match["umpire_1"] else None
+            match['umpire_2'] = Umpires().get_by_id(match["umpire_2"])['name'] if match["umpire_2"] else None
+            match['venue'] = Venues().get_by_id(match["venue"])['stadium'] if match["venue"] else None
 
         return matches
 
